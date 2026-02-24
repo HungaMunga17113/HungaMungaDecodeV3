@@ -1,7 +1,7 @@
 ## NOTICE
 
 This repository contains the public FTC SDK for the DECODE (2025-2026) competition season.
-
+e
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
@@ -1682,6 +1682,8 @@ Changes include:
  * The API for the Legacy Module and Core Device Interface Module have been updated.
    - Support for encoders with the Legacy Module is now working.
  * The hardware loop has been updated for better performance.
-#   H u n g a M u n g a D e c o d e V 3  
- #   H u n g a M u n g a D e c o d e V 3  
+#   H u n g a M u n g a D e c o d e V 3 
+ 
+ #   H u n g a M u n g a D e c o d e V 3 
+ 
  
