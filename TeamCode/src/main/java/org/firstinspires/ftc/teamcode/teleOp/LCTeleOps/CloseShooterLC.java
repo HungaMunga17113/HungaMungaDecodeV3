@@ -33,15 +33,16 @@ public class CloseShooterLC extends OpMode {
     DcMotorEx leftOuttake, rightOuttake;
     DcMotor leftFront, leftBack, rightFront, rightBack;
     public Servo servo;
+    public Servo servo2;
     //Initialize Variables
     /*
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1277;
+    public static double ticksPerSecond = 1200;
     //1500 is far
     //1250 is close
-    public static double servoPos = 0.552;
+    public static double servoPos = 0.13;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
@@ -76,7 +77,7 @@ public class CloseShooterLC extends OpMode {
     }
     private shooterStates mode = shooterStates.CLOSE;
 
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(333.2, 0, 0.07, 14.6);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(250, 0, 0.055, 14.9);
 //450, 0, 0.012, 11.7
 @Override
 public void init() {
@@ -120,7 +121,9 @@ public void init() {
     leftOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     rightOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-    servo = hardwareMap.get(Servo.class, "Axon");
+    servo = hardwareMap.get(Servo.class, "axon");
+    servo2 = hardwareMap.get(Servo.class, "axon2");
+    servo.setDirection(Servo.Direction.REVERSE);
 }
     @Override
     public void start() {
@@ -146,7 +149,7 @@ public void init() {
             //In case the drivers want to use a "slowMode" you can scale the vectors
             //This is the normal version to use in the TeleOp
             follower.setTeleOpDrive(
-                    Math.pow(-gamepad1.left_stick_y,3) * slowModeMultiplier,
+                    Math.pow(gamepad1.left_stick_y,3) * slowModeMultiplier,
                     Math.pow(-gamepad1.left_stick_x,3) * slowModeMultiplier,
                     Math.pow(-gamepad1.right_stick_x,3) * slowModeMultiplier,
                     true // Robot Centric
@@ -175,6 +178,7 @@ public void init() {
 
     public void shootTest() {
         servo.setPosition(servoPos);
+        servo2.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(ticksPerSecond);
