@@ -42,7 +42,7 @@ public class CloseShooterLC extends OpMode {
     public static double ticksPerSecond = 1200;
     //1500 is far
     //1250 is close
-    public static double servoPos = 0.13;
+    public static double servoPos = 0.125;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
@@ -76,8 +76,8 @@ public class CloseShooterLC extends OpMode {
         FAR
     }
     private shooterStates mode = shooterStates.CLOSE;
-
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(250, 0, 0.055, 14.9);
+    //233,0,0.0525,14.8
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(275, 0, 0.05, 15.2);
 //450, 0, 0.012, 11.7
 @Override
 public void init() {
@@ -149,7 +149,7 @@ public void init() {
             //In case the drivers want to use a "slowMode" you can scale the vectors
             //This is the normal version to use in the TeleOp
             follower.setTeleOpDrive(
-                    Math.pow(gamepad1.left_stick_y,3) * slowModeMultiplier,
+                    Math.pow(-gamepad1.left_stick_y,3) * slowModeMultiplier,
                     Math.pow(-gamepad1.left_stick_x,3) * slowModeMultiplier,
                     Math.pow(-gamepad1.right_stick_x,3) * slowModeMultiplier,
                     true // Robot Centric
@@ -177,13 +177,14 @@ public void init() {
 
 
     public void shootTest() {
+    /*
         servo.setPosition(servoPos);
         servo2.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(ticksPerSecond);
         rightOuttake.setVelocity(ticksPerSecond);
-        /*
+        */
         boolean aPressed = gamepad1.left_bumper;
 
         if (aPressed && !lastA) {
@@ -198,11 +199,12 @@ public void init() {
 
         switch (mode) {
             case CLOSE:
-                ticksPerSecond = 1277;
-                servoPos = 0.5745;
+                ticksPerSecond = 1200;
+                servoPos = 0.125;
                 minimum = 0;
 
                 servo.setPosition(servoPos);
+                servo2.setPosition((servoPos));
                 leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 leftOuttake.setVelocity(ticksPerSecond);
@@ -210,11 +212,12 @@ public void init() {
                 break;
 
             case FAR:
-                ticksPerSecond = 1525;
-                servoPos = 0.56;
-                minimum = 1505;
+                ticksPerSecond = 1560;
+                servoPos = 0.075;
+                minimum = 1520;
 
                 servo.setPosition(servoPos);
+                servo2.setPosition((servoPos));
                 leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 leftOuttake.setVelocity(ticksPerSecond);
@@ -222,7 +225,7 @@ public void init() {
                 break;
         }
 
-         */
+
         /*
         if (gamepad1.b){
             ticksPerSecond = 200;
