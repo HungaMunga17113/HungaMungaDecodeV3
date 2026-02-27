@@ -1,10 +1,16 @@
 package org.firstinspires.ftc.teamcode.teleOp.LCTeleOps;
 
 
+import static com.pedropathing.paths.HeadingInterpolator.linearFromPoint;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.HeadingInterpolator;
+import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -124,6 +130,19 @@ public void init() {
     servo = hardwareMap.get(Servo.class, "axon");
     servo2 = hardwareMap.get(Servo.class, "axon2");
     servo.setDirection(Servo.Direction.REVERSE);
+    pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
+            .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX() + 0.001, follower.getPose().getY() + 0.001))))
+            .setHeadingInterpolation(
+                    HeadingInterpolator.lazy(() -> {
+                        double robotX = follower.getPose().getX();
+                        double robotY = follower.getPose().getY();
+                        double alignX = targetX - robotX;
+                        double alignY = targetY - robotY;
+                        double angle = Math.atan2(alignY,alignX);
+                        return HeadingInterpolator.linear(follower.getHeading(), angle);
+                    })
+            )
+            .build();
 }
     @Override
     public void start() {
@@ -138,12 +157,6 @@ public void init() {
     private void Drive() {
         double slowModeMultiplier = 1 - (0.6 * gamepad1.left_trigger);
         follower.update();
-        double robotX = follower.getPose().getX();
-        double robotY = follower.getPose().getY();
-        double alignX = targetX + robotX;
-        double alignY = targetY - robotY;
-        double angle = Math.atan(alignX/alignY);
-        double turnTowards =  1+Math.toDegrees(angle);
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
             //In case the drivers want to use a "slowMode" you can scale the vectors
@@ -155,13 +168,9 @@ public void init() {
                     true // Robot Centric
             );
         }
-        /*
+
         //Automated PathFollowing
         if (gamepad1.a) {
-            pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
-                    .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX(), follower.getPose().getY()-0.01))))
-                    .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(turnTowards), 0.8))
-                    .build();
             follower.followPath(pathChain.get());
             automatedDrive = true;
         }
@@ -171,7 +180,7 @@ public void init() {
             automatedDrive = false;
         }
 
-         */
+
     }
 
 

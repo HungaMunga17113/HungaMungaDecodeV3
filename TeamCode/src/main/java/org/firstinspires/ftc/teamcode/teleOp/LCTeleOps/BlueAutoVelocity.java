@@ -48,7 +48,7 @@ public class BlueAutoVelocity extends OpMode {
     public static double ticksPerSecond = 0;
     //1500 is far
     //1250 is close
-    public static double servoPos = 0.395;
+    public static double servoPos = 0;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
@@ -59,13 +59,13 @@ public class BlueAutoVelocity extends OpMode {
     //0.85 is far
     double maxTransfer = 1;
     double minTransfer = 0.82;
-    double maxHood = 0.7;
-    double minHood = 0.55;
+    double maxHood = 0.2;
+    double minHood = 0.07;
     private Supplier<PathChain> pathChain;
 
     static final double targetX = 0;
     static final double targetY = 144;
-    double minVelocity = 1005;
+    double minVelocity = 1075;
     double maxVelocity = 1615;
     //1550
     private boolean automatedDrive;
@@ -73,7 +73,7 @@ public class BlueAutoVelocity extends OpMode {
     double minDistance = 30.941125497;
     double maxDistance = 148;
     //160
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.085, 14.6);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(276, 0, 0.05, 15.2);
     //465, 0.0001, 0.05, 12.3
     @Override
     public void init() {
